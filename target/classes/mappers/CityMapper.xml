@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.bytewen.mapper.CityMapper">
+
+    <insert id="add" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into tb_city
+          values(
+            #{id},
+            #{city},
+            #{flower},
+            #{province}
+          )
+    </insert>
+    <delete id="delete">
+        delete from tb_city
+        where id=#{id}
+    </delete>
+    <update id="update" parameterType="org.bytewen.po.City">
+        update tb_city
+        <set>
+            <if test="city!=null and city.trim()!=''">
+                city=#{city},
+            </if>
+            <if test="flower!=null and flower.trim()!=''">
+                flower=#{flower},
+            </if>
+            <if test="province!=null and province.trim()!=''">
+                province=#{province}
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <!---->
+    <select id="get" resultType="org.bytewen.po.City">
+        select * from tb_city
+        where id=#{id}
+    </select>
+
+    <!--条件查询-->
+    <select id="getList" resultType="org.bytewen.po.City">
+        select * from tb_city
+        <where>
+            <if test="city!=null and city.trim()!=''">
+                city like '%' #{city} '%'
+            </if>
+            <if test="flower!=null and flower.trim()!=''">
+                and flower like '%' #{flower} '%'
+            </if>
+            <if test="province!=null and province.trim()!=''">
+                and province like '%' #{province} '%'
+            </if>
+        </where>
+    </select>
+
+    <!--分页条件查询-->
+    <select id="getListByPage" resultType="org.bytewen.po.City">
+        select * from tb_city
+        <where>
+            <if test="city!=null and city.trim()!=''">
+                city like '%' #{city} '%'
+            </if>
+            <if test="flower!=null and flower.trim()!=''">
+                and flower like '%' #{flower} '%'
+            </if>
+            <if test="province!=null and province.trim()!=''">
+                and province like '%' #{province} '%'
+            </if>
+        </where>
+        limit #{start},#{size}
+    </select>
+</mapper>

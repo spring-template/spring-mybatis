@@ -1,0 +1,33 @@
+server:
+  port: 8000
+spring:
+  application:
+    name: springboot-mybatis
+  #数据库连接池配置
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/sample
+    username: root
+    password: 4rfvbgt5
+    druid:
+      initial-size: 1
+      min-idle: 1
+      max-active: 20
+#mybatis配置
+mybatis:
+  type-aliases-package: org.bytewen.po
+  mapper-locations: classpath:mappers/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+
+#日志配置
+logging:
+  level:
+    org.bytewen:
+      debug
+#jwt配置
+jwt:
+  config:
+    key: springboot
+    ttl: 360000000
+

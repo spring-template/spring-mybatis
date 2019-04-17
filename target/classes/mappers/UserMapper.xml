@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.bytewen.mapper.UserMapper">
+    <!--插入数据-->
+    <insert id="add" parameterType="org.bytewen.po.User" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        insert into tb_user values (null,#{username},#{cityId},#{wife},#{password},#{salt})
+    </insert>
+    <!--删除数据-->
+    <delete id="delete" parameterType="long">
+        delete from tb_user where id=#{id}
+    </delete>
+    <!--更新数据-->
+    <update id="update">
+        update tb_user
+        <set>
+            <if test="username!=null and username.trim()!=''">
+                username=#{username},
+            </if>
+            <if test="password!=null and password.trim()!=''">
+                password=#{password}
+            </if>
+            <if test="cityId!=null and cityId.trim()!=''">
+                cityId=#{cityId}
+            </if>
+            <if test="wife!=null and wife.trim()!=''">
+                wife=#{wife}
+            </if>
+            <if test="salt!=null and salt.trim()!=''">
+                salt=#{salt}
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <!--获得数据-->
+    <select id="get" resultType="org.bytewen.po.User">
+        select * from tb_user where id=#{id}
+    </select>
+
+    <select id="getByUsername" resultType="org.bytewen.po.User">
+        select * from tb_user where username=#{username}
+    </select>
+
+    <!--条件查询-->
+    <select id="getList" resultType="org.bytewen.po.User" parameterType="org.bytewen.po.User">
+        select * from tb_user
+        <where>
+            <if test="username!=null and username.trim()!=''">
+                username like '%' #{username} '%'
+            </if>
+            <if test="wife!=null and wife.trim()!=''">
+                and wife like '%' #{wife} '%'
+            </if>
+        </where>
+    </select>
+
+    <!--条件分页查询-->
+    <select id="listByPage" resultType="org.bytewen.po.User">
+        select * from tb_user
+        <where>
+            <if test="username!=null and username.trim()!=''">
+                username like '%' #{username} '%'
+            </if>
+            <if test="wife!=null and wife.trim()!=''">
+                and wife like '%' #{wife} '%'
+            </if>
+        </where>
+        limit  #{start},#{size}
+    </select>
+</mapper>

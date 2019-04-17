@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.bytewen.mapper.FilmMapper">
+    <!--添加-->
+    <insert id="add" parameterType="org.bytewen.po.Film" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        insert into tb_film
+        values(
+          null,
+          #{filmName},
+          #{date},
+          #{director},
+          #{actor},
+          #{actress}
+        )
+    </insert>
+    <!--删除-->
+    <delete id="delete">
+        delete from tb_film
+        where id=#{id}
+    </delete>
+    <!--更新-->
+    <update id="update">
+        update tb_film
+        <set>
+            <if test="filmName!=null and filmName.trim()!=''">
+                film_name=#{filmName},
+            </if>
+            <if test="date!=null">
+                date=#{date},
+            </if>
+            <if test="director!=null and director.trim()!=''">
+                director=#{director},
+            </if>
+            <if test="actor!=null and actor.trim()!=''">
+                actor=#{actor},
+            </if>
+            <if test="actress!=null and actress.trim()!=''">
+                actress=#{actress},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+    <!--查找-->
+    <select id="get" resultType="org.bytewen.po.Film">
+        select * from tb_film
+        where id=#{id}
+    </select>
+    <!--计数-->
+    <select id="count" resultType="int">
+        select count(*) from tb_film
+    </select>
+    <!--条件查找-->
+    <select id="getList" resultType="org.bytewen.po.Film" parameterType="map">
+        select * from tb_film
+        <where>
+            <if test="filmName!=null and filmName.trim()!=''">
+                film_name like '%' #{film.filmName} '%'
+            </if>
+            <if test="director!=null and director.trim()!=''">
+                and director = #{film.director}
+            </if>
+            <if test="actor!=null and actor.trim()!=''">
+                and actor = #{film.actor}
+            </if>
+            <if test="actress!=null and actress.trim()!=''">
+                and actress = # {film.actress}
+            </if>
+        </where>
+        <if test="firstKey!=null and firstKey.trim()!=''">
+            order by
+            ${firstKey} ${order}
+        </if>
+    </select>
+    <!--条件分页查询-->
+    <select id="getListByPage" parameterType="map" resultType="org.bytewen.po.Film">
+        select * from tb_film
+        <where>
+            <if test="film.filmName!=null and film.filmName.trim()!=''">
+                film_name like '%' #{film.filmName} '%'
+            </if>
+            <if test="film.director!=null and film.director.trim()!=''">
+                and director like '%' #{film.director} '%'
+            </if>
+            <if test="film.actor!=null and film.actor.trim()!=''">
+                and actor like '%' #{film.actor} '%'
+            </if>
+            <if test="film.actress!=null and film.actress.trim()!=''">
+                and actress like '%' #{film.actress} '%'
+            </if>
+        </where>
+        <if test="orderColumn!=null and orderColumn.trim()!=''">
+            order by
+            ${orderColumn} ${order}
+        </if>
+        limit #{start},#{size}
+    </select>
+</mapper>
