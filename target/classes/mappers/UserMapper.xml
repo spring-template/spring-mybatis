@@ -6,7 +6,15 @@
 <mapper namespace="org.bytewen.mapper.UserMapper">
     <!--插入数据-->
     <insert id="add" parameterType="org.bytewen.po.User" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
-        insert into tb_user values (null,#{username},#{cityId},#{wife},#{password},#{salt})
+        insert into tb_user values
+        (
+          null,
+          #{username},
+          #{cityId},
+          #{wife},
+          #{password},
+          #{salt}
+        )
     </insert>
     <!--删除数据-->
     <delete id="delete" parameterType="long">
@@ -70,4 +78,10 @@
         </where>
         limit  #{start},#{size}
     </select>
+    <!--通过盐区分-->
+    <select id="getBySalt" resultType="org.bytewen.po.User">
+        select * from tb_user
+        where salt=#{salt}
+    </select>
+
 </mapper>

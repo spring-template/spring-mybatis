@@ -15,4 +15,5 @@ public interface UserMapper {
     public User getByUsername(@Param("username")String username);
     public List<User> getList(User user);
     public List<User> listByPage(@Param("start") int currentPage,@Param("size") int pageSize,@Param("username") String username,@Param("wife") String wife);
+    public User getBySalt(@Param("salt") String salt);
 }

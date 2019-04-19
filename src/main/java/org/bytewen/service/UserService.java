@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
 public class UserService {
 
@@ -32,8 +30,14 @@ public class UserService {
         this.userMapper.add(user);
         UserHobby userHobby=new UserHobby();
         userHobby.setUserId(user.getId());
-        userHobby.setHobbyId(hobbyId);
-        this.userHobbyMapper.add(userHobby);
+        if(hobbyId!=null){
+            userHobby.setHobbyId(hobbyId);
+            this.userHobbyMapper.add(userHobby);
+        }
+    }
+    public User checkBySalt(String salt){
+        User user = userMapper.getBySalt(salt);
+        return user;
     }
 
 }
